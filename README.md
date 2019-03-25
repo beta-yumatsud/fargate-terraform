@@ -6,7 +6,12 @@ FargateをTerraformを通して使ってみる勉強用リポジトリ。
   * [Fargateで自作したコンテナイメージを動かしてみる](https://qiita.com/yumatsud/items/0acad37d10a6782ecec8)
   * [AWS CodeBuild+Amazon ECRを試してみる](https://qiita.com/yumatsud/items/309c49556b2ac8308a59)
   * [AWS CodePipelineを使ってAWS CodeBuildでビルドしFargateにデプロイしてみる(下書き)](https://qiita.com/drafts/6e0ab4bc8444f2211271)
-* 使用するアプリケーションは [kotlinwebflux](https://github.com/beta-yumatsud/kotlinwebflux) でこちらをビルド・デプロイまでやってみる
+* 使用するアプリケーションは [localstack-sample-nodejs](https://github.com/beta-yumatsud/localstack-sample-nodejs) でこちらをビルド・デプロイまでやってみる
+* ついでにやってみたこと
+  * workspaceを利用して環境ごとに分けれるようにする
+    * commonは共通なので今回はいじっていませんが、基本的には同様に実施可能
+  * module化
+    * 上に同じく
 
 # つまずきメモ
 * [コンテナイメージをプルできないエラー](https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_cannot_pull_image.html)の `接続タイムアウト`

@@ -4,7 +4,7 @@
 resource "aws_security_group" "lb_sg" {
   description = "controls access to the ALB"
   vpc_id      = "${data.terraform_remote_state.network.vpc_id}"
-  name        = "alb-sg"
+  name        = "${var.name}-alb-sg"
 
   ingress {
     protocol    = "tcp"
@@ -28,7 +28,7 @@ resource "aws_security_group" "lb_sg" {
 resource "aws_security_group" "ecs_sg" {
   description = "controls direct access to the ECS"
   vpc_id      = "${data.terraform_remote_state.network.vpc_id}"
-  name        = "ecs-sg"
+  name        = "${var.name}-ecs-sg"
 
   ingress {
     protocol    = "tcp"

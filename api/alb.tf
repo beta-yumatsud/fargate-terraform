@@ -2,7 +2,7 @@
 # https://www.terraform.io/docs/providers/aws/r/lb_target_group.html
 
 resource "aws_alb_target_group" "main" {
-  name = "tf-test"
+  name = "${var.name}"
 
   protocol    = "HTTP"
   port        = 3000
@@ -28,7 +28,7 @@ resource "aws_alb_target_group" "main" {
 
 # https://www.terraform.io/docs/providers/aws/r/lb.html
 resource "aws_alb" "main" {
-  name = "tf-test"
+  name = "${var.name}"
 
   subnets         = ["${data.terraform_remote_state.network.subnets}"]
   security_groups = ["${aws_security_group.lb_sg.id}"]

@@ -25,10 +25,11 @@ data "template_file" "task_definition" {
   # https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_definition_parameters.html
   template = "${file("${path.module}/task-definition.json")}"
 
+  // CPU, Memoryは環境毎に分けてあげた方が良さげ
   vars {
     // templateのjsonで指定したplacefolderへの代入
-    image_url        = "${var.account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/api:latest"
-    container_name   = "api"
+    image_url        = "${var.account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/${var.component_name}:${var.image_tag}"
+    container_name   = "${var.component_name}"
     log_group_region = "${var.aws_region}"
     log_group_name   = "${aws_cloudwatch_log_group.app.name}"
     log_group_prefix = "${var.name}"
@@ -65,7 +66,7 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.main.id}"
-    container_name   = "${var.name}"
+    container_name   = "${var.component_name}"
     container_port   = 3000
   }
 
