@@ -13,9 +13,31 @@ FargateをTerraformを通して使ってみる勉強用リポジトリ。
   * module化
     * 上に同じく
 
-# つまずきメモ
+# その他のメモ
 * [コンテナイメージをプルできないエラー](https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_cannot_pull_image.html)の `接続タイムアウト`
   * [Fargate 起動タイプを使用してタスクを実行する](https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/ecs_run_task_fargate.html)の `自動割り当てパブリック IP` を参照
+* Code Buildのcliメモ
+```
+■プロジェクトのリスト表示
+$ aws codebuild list-projects
+
+■特定のブロジェクトを参照
+$ aws codebuild batch-get-projects --names hogehoge
+```
+* Code Pipelineのcliメモ
+```
+■pipelineの一覧を取得
+$ aws codepipeline list-pipelines
+
+■詳細
+$ aws codepipeline get-pipeline --name hogehoge
+
+■Webhookの設定一覧
+$ aws codepipeline list-webhooks 
+
+■Webhookのカスタマイズ
+$ aws codepipeline put-webhook --cli-input-json file://webhook.json
+```
 
 # 参考文献
 * [ECS with ALB example](https://github.com/terraform-providers/terraform-provider-aws/tree/master/examples/ecs-alb)
@@ -31,3 +53,4 @@ FargateをTerraformを通して使ってみる勉強用リポジトリ。
 * [Terraformにおけるディレクトリ構造のベストプラクティス](https://dev.classmethod.jp/devops/directory-layout-bestpractice-in-terraform/)
 * [terraformで、他のtfstateファイルのリソース情報を参照する](https://qiita.com/Anorlondo448/items/f939fffca1170ea613ab)
 * [mobile-infra-architecture](https://speakerdeck.com/sioncojp/folio-mobile-infra-architecture)
+* [GitHubのpush以外のWebHookイベントからCodePipelineを発火させる](https://qiita.com/yuukive/items/cff3e76301006f42c78f)
