@@ -81,6 +81,7 @@ resource "aws_codebuild_project" "do_test_pull_request" {
 resource "aws_codebuild_webhook" "pull_request" {
   project_name = "${aws_codebuild_project.do_test_pull_request.name}"
 }
+
 /*
 // 下記は不要。ただし、上記のaws_codebuild_webhookでは、pull_requestとpushで作成されるので要注意
 resource "github_repository_webhook" "pr" {

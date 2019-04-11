@@ -14,4 +14,3 @@ variable "aws_az_count" {
 
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
-

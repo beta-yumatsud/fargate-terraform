@@ -38,6 +38,10 @@ $ aws codepipeline list-webhooks
 ■Webhookのカスタマイズ
 $ aws codepipeline put-webhook --cli-input-json file://webhook.json
 ```
+* GithubのPR時にCI/CDが通ったらマージできるとかの制御方法
+  * 対象リポジトリの `settings` → `Branches` へ移動
+  * `Branch protection rules` の `Add rule`
+  * `Require pull request reviews before merging` や `Require status checks to pass before merging` を設定すればOK
 
 # 参考文献
 * [ECS with ALB example](https://github.com/terraform-providers/terraform-provider-aws/tree/master/examples/ecs-alb)
