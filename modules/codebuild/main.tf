@@ -1,9 +1,16 @@
 ## Code Build
+
+variable "tag_name" {}
+variable "account_id" {}
+variable "image_tag" {}
+variable "ci_name" {}
+variable "source_location" {}
+
 # https://www.terraform.io/docs/providers/aws/r/codebuild_project.html
 # イメージのBuildとECRへのPush
-resource "aws_codebuild_project" "build_pull_container_image" {
-  name         = "build_pull_container_image"
-  description  = "build container image and pull it"
+resource "aws_codebuild_project" "build_and_push_container_image" {
+  name         = "${var.ci_name}_build_and_push_container_image"
+  description  = "build container image and push it"
   service_role = "${aws_iam_role.code_build.arn}"
 
   "artifacts" {
@@ -22,6 +29,7 @@ resource "aws_codebuild_project" "build_pull_container_image" {
       type  = "PLAINTEXT"
     }
 
+    // TODO Githubのブランチを使い、それをbuildspec.ymlに組み込むなら下記は不要
     environment_variable {
       name  = "IMAGE_TAG"
       value = "${var.image_tag}"
@@ -31,22 +39,22 @@ resource "aws_codebuild_project" "build_pull_container_image" {
 
   "source" {
     type            = "GITHUB"
-    location        = "https://github.com/darma2anderson/aws-pipeline-sample.git"
+    location        = "${var.source_location}"
     git_clone_depth = 1
   }
 
   tags {
-    Name = "${var.name}"
+    Name = "${var.tag_name}"
   }
 }
 
 # PRでテスト実行するbuild
-# TODO 下記ではおそらく足りないかも？やってみてダメな場合、当面は手動管理で良いかも
+# 下記ではおそらく足りないかも？やってみてダメな場合、当面は手動管理で良いかも
 # https://github.com/terraform-providers/terraform-provider-aws/pull/8110
 # 現在のバージョンだと、CodeBuildのコンソール上でできる、
 # Primary source webhook eventsの設定は不可＞＜
 resource "aws_codebuild_project" "do_test_pull_request" {
-  name         = "do_test_pull_request"
+  name         = "${var.ci_name}_do_test_pull_request"
   service_role = "${aws_iam_role.code_build.arn}"
   description  = "Do unit test when creating or updating pull request"
 
@@ -62,7 +70,7 @@ resource "aws_codebuild_project" "do_test_pull_request" {
 
   "source" {
     type                = "GITHUB"
-    location            = "https://github.com/darma2anderson/aws-pipeline-sample.git"
+    location            = "${var.source_location}"
     git_clone_depth     = 1
     buildspec           = "testspec.yml"
     report_build_status = true
@@ -71,7 +79,7 @@ resource "aws_codebuild_project" "do_test_pull_request" {
   badge_enabled = true
 
   tags {
-    Name = "${var.name}"
+    Name = "${var.tag_name}"
   }
 }
 
@@ -100,7 +108,7 @@ resource "github_repository_webhook" "pr" {
 
 # task definitionのjsonを吐くだけ
 resource "aws_codebuild_project" "create_task_definition" {
-  name         = "create_task_definition"
+  name         = "${var.ci_name}_create_task_definition"
   description  = "Create image definition in prod env deployment."
   service_role = "${aws_iam_role.code_build.arn}"
 
@@ -119,6 +127,7 @@ resource "aws_codebuild_project" "create_task_definition" {
       type  = "PLAINTEXT"
     }
 
+    // TODO Githubのブランチを使い、それをbuildspec.ymlに組み込むなら下記は不要
     environment_variable {
       name  = "IMAGE_TAG"
       value = "${var.image_tag}"
@@ -128,12 +137,21 @@ resource "aws_codebuild_project" "create_task_definition" {
 
   "source" {
     type            = "GITHUB"
-    location        = "https://github.com/darma2anderson/aws-pipeline-sample.git"
+    location        = "${var.source_location}"
     git_clone_depth = 1
     buildspec       = "deployspec.yml"
   }
 
   tags {
-    Name = "${var.name}"
+    Name = "${var.tag_name}"
   }
+}
+
+# output
+output "build_pull_container_image_project" {
+  value = "${aws_codebuild_project.build_and_push_container_image.name}"
+}
+
+output "create_task_definition_project" {
+  value = "${aws_codebuild_project.create_task_definition.name}"
 }
