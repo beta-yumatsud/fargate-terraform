@@ -62,3 +62,8 @@ resource "aws_alb_listener" "main" {
 output "alb_target_group_id" {
   value = "${aws_alb_target_group.main.id}"
 }
+
+// 実際には使わないが、ecsがこの後に作成して欲しく、依存を作るため。
+output "alb_id" {
+  value = "${aws_alb.main.id}"
+}

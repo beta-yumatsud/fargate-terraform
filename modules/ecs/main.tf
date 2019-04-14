@@ -9,7 +9,10 @@ variable "cpu" {}
 variable "memory" {}
 variable "service_name" {}
 variable "desired_count" {}
-variable "target_group_arn" {}
+variable "target_group_arn" {
+  description = "The Amazon Resource Name (ARN) of the ALB that this ECS Service will use as its load balancer."
+}
+variable "target_alb_id" {}
 variable "container_name" {}
 variable "container_port" {}
 
@@ -72,5 +75,19 @@ resource "aws_ecs_service" "this" {
 
   tags {
     Name = "${var.tag_name}"
+  }
+
+  // albeをmoduleで分けた時に、albが出来上がる前にecsが立ち上がろうとして失敗してしまう対応
+  // https://github.com/hashicorp/terraform/issues/12634#issuecomment-321633155
+  depends_on = [
+    "null_resource.alb_exists"
+  ]
+}
+
+resource "null_resource" "alb_exists" {
+  // ALBで依存しているものを記載しておく ( 特にALBの立ち上がりには時間がかかるので )
+  triggers {
+    alb_id = "${var.target_alb_id}"
+    alb_name = "${var.target_group_arn}"
   }
 }
