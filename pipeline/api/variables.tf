@@ -22,7 +22,3 @@ variable "component_name" {
   default = "api"
 }
 
-# Githubのブランチなどを使う場合は不要
-variable "image_tag" {
-  default = "latest"
-}

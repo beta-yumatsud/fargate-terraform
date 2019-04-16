@@ -2,7 +2,6 @@
 
 variable "tag_name" {}
 variable "account_id" {}
-variable "image_tag" {}
 variable "ci_name" {}
 variable "source_location" {}
 
@@ -29,12 +28,6 @@ resource "aws_codebuild_project" "build_and_push_container_image" {
       type  = "PLAINTEXT"
     }
 
-    // TODO Githubのブランチを使い、それをbuildspec.ymlに組み込むなら下記は不要
-    environment_variable {
-      name  = "IMAGE_TAG"
-      value = "${var.image_tag}"
-      type  = "PLAINTEXT"
-    }
   }
 
   "source" {
@@ -127,12 +120,6 @@ resource "aws_codebuild_project" "create_task_definition" {
       type  = "PLAINTEXT"
     }
 
-    // TODO Githubのブランチを使い、それをbuildspec.ymlに組み込むなら下記は不要
-    environment_variable {
-      name  = "IMAGE_TAG"
-      value = "${var.image_tag}"
-      type  = "PLAINTEXT"
-    }
   }
 
   "source" {

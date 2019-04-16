@@ -16,7 +16,6 @@ module "ci" {
 
   ci_name         = "${var.component_name}"
   account_id      = "${var.account_id}"
-  image_tag       = "${var.image_tag}"
   source_location = "https://github.com/darma2anderson/aws-pipeline-sample.git"
 
   tag_name        = "${var.component_name}"
