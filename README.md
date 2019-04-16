@@ -58,3 +58,4 @@ $ aws codepipeline put-webhook --cli-input-json file://webhook.json
 * [terraformで、他のtfstateファイルのリソース情報を参照する](https://qiita.com/Anorlondo448/items/f939fffca1170ea613ab)
 * [mobile-infra-architecture](https://speakerdeck.com/sioncojp/folio-mobile-infra-architecture)
 * [GitHubのpush以外のWebHookイベントからCodePipelineを発火させる](https://qiita.com/yuukive/items/cff3e76301006f42c78f)
+* [CodeBuild で Docker イメージに Git のコミットIDをタグ付けてバージョン管理する](https://dev.classmethod.jp/cloud/aws/docker-image-tag-git-commit-id-by-codebuild/)
