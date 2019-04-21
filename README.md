@@ -59,3 +59,4 @@ $ aws codepipeline put-webhook --cli-input-json file://webhook.json
 * [mobile-infra-architecture](https://speakerdeck.com/sioncojp/folio-mobile-infra-architecture)
 * [GitHubのpush以外のWebHookイベントからCodePipelineを発火させる](https://qiita.com/yuukive/items/cff3e76301006f42c78f)
 * [CodeBuild で Docker イメージに Git のコミットIDをタグ付けてバージョン管理する](https://dev.classmethod.jp/cloud/aws/docker-image-tag-git-commit-id-by-codebuild/)
+* [Terraform workspaceを利用する。環境ごとのリソース名の分岐など](https://blog.mosuke.tech/entry/2018/06/16/terraform-workspaces/)
