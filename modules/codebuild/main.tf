@@ -4,6 +4,7 @@ variable "tag_name" {}
 variable "account_id" {}
 variable "ci_name" {}
 variable "source_location" {}
+variable "github_token" {}
 
 # https://www.terraform.io/docs/providers/aws/r/codebuild_project.html
 # イメージのBuildとECRへのPush
@@ -28,6 +29,11 @@ resource "aws_codebuild_project" "build_and_push_container_image" {
       type  = "PLAINTEXT"
     }
 
+    environment_variable {
+      name  = "GITHUB_TOKEN"
+      value = "${var.github_token}"
+      type  = "PLAINTEXT"
+    }
   }
 
   "source" {
@@ -117,6 +123,7 @@ resource "aws_codebuild_project" "create_task_definition" {
     compute_type = "BUILD_GENERAL1_SMALL"
     image        = "aws/codebuild/docker:18.09.0-1.7.0"
     type         = "LINUX_CONTAINER"
+    privileged_mode = true
 
     environment_variable {
       name  = "ACCOUNT_ID"
@@ -124,6 +131,11 @@ resource "aws_codebuild_project" "create_task_definition" {
       type  = "PLAINTEXT"
     }
 
+    environment_variable {
+      name  = "GITHUB_TOKEN"
+      value = "${var.github_token}"
+      type  = "PLAINTEXT"
+    }
   }
 
   "source" {
