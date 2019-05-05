@@ -46,6 +46,7 @@ resource "aws_codebuild_project" "build_and_push_container_image" {
 # https://github.com/terraform-providers/terraform-provider-aws/pull/8110
 # 現在のバージョンだと、CodeBuildのコンソール上でできる、
 # Primary source webhook eventsの設定は不可＞＜
+/*
 resource "aws_codebuild_project" "do_test_pull_request" {
   name         = "${var.ci_name}_do_test_pull_request"
   service_role = "${aws_iam_role.code_build.arn}"
@@ -75,13 +76,16 @@ resource "aws_codebuild_project" "do_test_pull_request" {
     Name = "${var.tag_name}"
   }
 }
+*/
 
 # Webhook
 # https://www.terraform.io/docs/providers/github/r/repository_webhook.html
 # https://developer.github.com/v3/activity/events/types/#pullrequestevent
+/*
 resource "aws_codebuild_webhook" "pull_request" {
   project_name = "${aws_codebuild_project.do_test_pull_request.name}"
 }
+*/
 
 /*
 // 下記は不要。ただし、上記のaws_codebuild_webhookでは、pull_requestとpushで作成されるので要注意

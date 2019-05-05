@@ -30,8 +30,8 @@ module "cd" {
   github_repo         = "aws-pipeline-sample"
   github_token        = "${var.token}"
 
-  test_env_name       = "test"
-  staging_env_name    = "staging"
+  test_env_name       = "dev"
+  staging_env_name    = "stg"
   prod_env_name       = "prod"
 
   test_env_branch     = "develop"

@@ -25,7 +25,7 @@ module "ecs" {
   alb_sg_id      = "${module.alb.alb_sg_id}"
 
   // ECS cluster
-  cluster_name = "${var.component_name}"
+  cluster_name = "${var.name}"
 
   // ECS task definition
   family_name           = "${var.component_name}"
@@ -34,7 +34,7 @@ module "ecs" {
   memory                = "1024"
 
   // ECS service
-  service_name     = "${var.component_name}"
+  service_name     = "${var.name}"
   desired_count    = "${var.service_desired}"
   container_name   = "${var.component_name}"
   container_port   = 3000
