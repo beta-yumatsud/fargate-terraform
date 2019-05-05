@@ -38,7 +38,8 @@ module "cd" {
   staging_env_branch  = "master"
   prod_env_branch     = "master"
 
-  build_project_name  = "${module.ci.build_pull_container_image_project}"
+  develop_build_project_name = "${module.ci.build_pull_container_image_develop_project}"
+  master_build_project_name = "${module.ci.build_pull_container_image_master_project}"
   deploy_project_name = "${module.ci.create_task_definition_project}"
 
   cluster_name = "${var.component_name}"

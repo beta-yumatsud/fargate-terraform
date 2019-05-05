@@ -13,7 +13,8 @@ variable "test_env_branch" {}
 variable "staging_env_branch" {}
 variable "prod_env_branch" {}
 
-variable "build_project_name" {}
+variable "develop_build_project_name" {}
+variable "master_build_project_name" {}
 variable "deploy_project_name" {}
 
 variable "cluster_name" {}
@@ -70,7 +71,7 @@ resource "aws_codepipeline" "test_deploy" {
       output_artifacts = ["BuildArtifact"]
 
       configuration {
-        ProjectName = "${var.build_project_name}"
+        ProjectName = "${var.develop_build_project_name}"
       }
     }
   }
@@ -173,7 +174,7 @@ resource "aws_codepipeline" "staging_deploy" {
       output_artifacts = ["BuildArtifact"]
 
       configuration {
-        ProjectName = "${var.build_project_name}"
+        ProjectName = "${var.master_build_project_name}"
       }
     }
   }

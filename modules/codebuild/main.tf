@@ -7,9 +7,9 @@ variable "source_location" {}
 variable "github_token" {}
 
 # https://www.terraform.io/docs/providers/aws/r/codebuild_project.html
-# イメージのBuildとECRへのPush
-resource "aws_codebuild_project" "build_and_push_container_image" {
-  name         = "${var.ci_name}_build_and_push_container_image"
+# イメージのBuildとECRへのPush ( develop )
+resource "aws_codebuild_project" "build_and_push_container_image_develop" {
+  name         = "${var.ci_name}_build_and_push_container_image_develop"
   description  = "build container image and push it"
   service_role = "${aws_iam_role.code_build.arn}"
 
@@ -30,8 +30,48 @@ resource "aws_codebuild_project" "build_and_push_container_image" {
     }
 
     environment_variable {
-      name  = "GITHUB_TOKEN"
-      value = "${var.github_token}"
+      name  = "IMAGE_TAG"
+      value = "develop"
+      type  = "PLAINTEXT"
+    }
+  }
+
+  "source" {
+    type            = "GITHUB"
+    location        = "${var.source_location}"
+    git_clone_depth = 1
+  }
+
+  tags {
+    Name = "${var.tag_name}"
+  }
+}
+
+# イメージのBuildとECRへのPush ( master )
+resource "aws_codebuild_project" "build_and_push_container_image_master" {
+  name         = "${var.ci_name}_build_and_push_container_image_master"
+  description  = "build container image and push it"
+  service_role = "${aws_iam_role.code_build.arn}"
+
+  "artifacts" {
+    type = "NO_ARTIFACTS"
+  }
+
+  "environment" {
+    compute_type    = "BUILD_GENERAL1_SMALL"
+    image           = "aws/codebuild/docker:18.09.0-1.7.0"
+    type            = "LINUX_CONTAINER"
+    privileged_mode = true
+
+    environment_variable {
+      name  = "ACCOUNT_ID"
+      value = "${var.account_id}"
+      type  = "PLAINTEXT"
+    }
+
+    environment_variable {
+      name  = "IMAGE_TAG"
+      value = "master"
       type  = "PLAINTEXT"
     }
   }
@@ -151,10 +191,12 @@ resource "aws_codebuild_project" "create_task_definition" {
 }
 
 # output
-output "build_pull_container_image_project" {
-  value = "${aws_codebuild_project.build_and_push_container_image.name}"
+output "build_pull_container_image_develop_project" {
+  value = "${aws_codebuild_project.build_and_push_container_image_develop.name}"
 }
-
+output "build_pull_container_image_master_project" {
+  value = "${aws_codebuild_project.build_and_push_container_image_master.name}"
+}
 output "create_task_definition_project" {
   value = "${aws_codebuild_project.create_task_definition.name}"
 }
